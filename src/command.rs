@@ -48,7 +48,7 @@ impl Command {
     pub fn as_bytes(&self) -> Vec<u8> {
         match self {
             Command::Cut => vec![0x1d, 0x56, 0x41, 0x96],
-            Command::Reset => vec![0x1d, 0x40],
+            Command::Reset => vec![0x1b, 0x40],
             Command::PrintModeDefault => vec![0x01b, 0x21, 0x00],
             Command::SelectCharset{charset} => {
                 let mut res = vec![0x1b, 0x52];

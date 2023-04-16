@@ -1,3 +1,7 @@
+# escpos-rust: 基于 escpos-rs 优化扩展
+
+
+
 # escpos-rs: A Rust crate for thermal printers
 
 **Work in progress. Not ready for production.**

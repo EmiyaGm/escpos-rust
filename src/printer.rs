@@ -35,6 +35,14 @@ enum PrinterConnection {
     Terminal
 }
 
+/// barcode position
+enum BarcodePostion {
+    None,
+    Top,
+    Bottom,
+    Both
+}
+
 /// Main escpos-rs structure
 ///
 /// The printer represents the thermal printer connected to the computer.
@@ -219,6 +227,32 @@ impl Printer {
         let feed = content.into() + "\n";
         self.print(&feed)
     }
+
+    /// Print barcode use type code128
+    ///
+    /// You also can set HRI code postion. None Top Bottom Both four postions.
+    // pub fn print_barcode<T: Into<String>>(&self, content: T, position: BarcodePostion) -> Result<(), Error> {
+    //     self.set_barcode_position(position.into());
+    //     Ok(())
+    // }
+
+    // pub fn set_barcode_position<T: Into<String>>(&self, position: BarcodePostion) -> Result<(), Error> {
+    //     self.raw(&Command::Reset.as_bytes());
+    //     match position.into() {
+    //         BarcodePostion::None => {
+    //             self.raw(&[0x1d, 0x48, 0x00])
+    //         },
+    //         BarcodePostion::Top => {
+    //             self.raw(&[0x1d, 0x48, 0x01])
+    //         },
+    //         BarcodePostion::Bottom => {
+    //             self.raw(&[0x1d, 0x48, 0x02])
+    //         },
+    //         BarcodePostion::Both => {
+    //             self.raw(&[0x1d, 0x48, 0x03])
+    //         }
+    //     }
+    // }
 
     /// Sets the current printing font.
     ///

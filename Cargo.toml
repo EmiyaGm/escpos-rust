@@ -1,11 +1,11 @@
 [package]
-name = "escpos-rs"
-version = "0.3.1"
+name = "escpos-rust"
+version = "0.0.1"
 license = "MIT"
-description = "Control esc/pos printers with rust"
-repository = "https://github.com/Malanche/escpos-rs.git"
-authors = ["Carlos Malanche <carlos.malanche.f@gmail.com>"]
-edition = "2018"
+description = "Control esc/pos printers with rust update from escpos-rs"
+repository = "https://github.com/EmiyaGm/escpos-rust.git"
+authors = ["EmiyaGm <464723943@qq.com>"]
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -17,3 +17,4 @@ codepage-437 = "0.1.0"
 image = "0.23.14"
 base64 = "0.13.0"
 qrcode = "0.12.0"
+encoding = "0.2.33"
