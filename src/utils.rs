@@ -1,3 +1,5 @@
+pub struct Utils {}
+
 impl Utils {
     pub fn separate_numbers_and_non_numbers(input: &str) -> Vec<String> {
         let mark = "!";

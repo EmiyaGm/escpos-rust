@@ -26,7 +26,8 @@ pub enum Error {
     NoWidth,
     NoQrContent(String),
     NoQrContents,
-    Encoding
+    Encoding,
+    BarcodeError,
 }
 
 impl std::fmt::Display for Error {
@@ -48,7 +49,8 @@ impl std::fmt::Display for Error {
             Error::NoWidth => "No width was found for the selected font".to_string(),
             Error::NoQrContent(name) => format!("Could not find qr code content for \"{}\"", name),
             Error::NoQrContents => "Could not find qr contents".to_string(),
-            Error::Encoding => "An unsupported utf-8 character was found when passing to cp437".to_string()
+            Error::Encoding => "An unsupported utf-8 character was found when passing to cp437".to_string(),
+            Error::BarcodeError => "Barcode Error".to_string()
         };
         write!(formatter, "{}", content)
     }

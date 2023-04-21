@@ -10,7 +10,8 @@ use crate::{
     EscposImage,
     Error,
     command::{Command, Font},
-    Formatter
+    Formatter,
+    utils
 };
 
 extern crate codepage_437;
@@ -36,7 +37,7 @@ enum PrinterConnection {
 }
 
 /// barcode position
-enum BarcodePostion {
+pub enum BarcodePostion {
     None,
     Top,
     Bottom,
@@ -231,28 +232,45 @@ impl Printer {
     /// Print barcode use type code128
     ///
     /// You also can set HRI code postion. None Top Bottom Both four postions.
-    // pub fn print_barcode<T: Into<String>>(&self, content: T, position: BarcodePostion) -> Result<(), Error> {
-    //     self.set_barcode_position(position.into());
-    //     Ok(())
-    // }
+    pub fn print_barcode(&self, content: String, position: BarcodePostion) -> Result<(), Error> {
+        match self.set_barcode_position(position) {
+            Ok(_) => Ok({
+                let input = content.as_str();
+                let result = utils::Utils::separate_numbers_and_non_numbers(input);
+                let str_line = result[0].as_bytes().to_vec();
+                let number_line = result[1].as_bytes().to_vec();
+                let mut brcode_arr: Vec<u8> = vec![0x1d, 0x6b, 0x49, 0x0a, 0x7b, 0x42];
+                brcode_arr.extend(&str_line);
+                brcode_arr.push(0x7b);
+                brcode_arr.push(0x43);
+                brcode_arr.extend(&number_line);
+                self.raw(brcode_arr);
+            }),
+            Err(e) => return Err(Error::BarcodeError)
+        }
+    }
 
-    // pub fn set_barcode_position<T: Into<String>>(&self, position: BarcodePostion) -> Result<(), Error> {
-    //     self.raw(&Command::Reset.as_bytes());
-    //     match position.into() {
-    //         BarcodePostion::None => {
-    //             self.raw(&[0x1d, 0x48, 0x00])
-    //         },
-    //         BarcodePostion::Top => {
-    //             self.raw(&[0x1d, 0x48, 0x01])
-    //         },
-    //         BarcodePostion::Bottom => {
-    //             self.raw(&[0x1d, 0x48, 0x02])
-    //         },
-    //         BarcodePostion::Both => {
-    //             self.raw(&[0x1d, 0x48, 0x03])
-    //         }
-    //     }
-    // }
+    pub fn set_barcode_position(&self, position: BarcodePostion) -> Result<(), Error> {
+        match self.raw(&Command::Reset.as_bytes()) {
+            Ok(_) => {
+                match position.into() {
+                    BarcodePostion::None => {
+                        self.raw(&[0x1d, 0x48, 0x00])
+                    },
+                    BarcodePostion::Top => {
+                        self.raw(&[0x1d, 0x48, 0x01])
+                    },
+                    BarcodePostion::Bottom => {
+                        self.raw(&[0x1d, 0x48, 0x02])
+                    },
+                    BarcodePostion::Both => {
+                        self.raw(&[0x1d, 0x48, 0x03])
+                    }
+                }
+            },
+            Err(e) => return Err(Error::BarcodeError)
+        }
+    }
 
     /// Sets the current printing font.
     ///
