@@ -1,5 +1,7 @@
 pub use self::printer_profile::{PrinterProfile, PrinterConnectionData, PrinterProfileBuilder};
 pub use self::printer_model::PrinterModel;
+use encoding::all::GB18030;
+use encoding::{EncoderTrap, Encoding};
 
 mod printer_profile;
 mod printer_model;
@@ -221,6 +223,14 @@ impl Printer {
         }
     }
 
+    /// Print gb18030 text.
+    /// 
+    /// Use encoding and send raw data
+    pub fn print_gb18030(&self, content: String) -> Result<(), Error> {
+        let encoded = GB18030.encode(&content, EncoderTrap::Strict).unwrap();
+        self.raw(encoded)
+    }
+
     /// Print some text, with a newline at the end.
     ///
     /// By default, lines will break when the text exceeds the current font's width. If you want to break lines with whitespaces, according to the width, you can use the [set_space_split](Printer::set_space_split) function.
@@ -244,9 +254,12 @@ impl Printer {
                 brcode_arr.push(0x7b);
                 brcode_arr.push(0x43);
                 brcode_arr.extend(&number_line);
-                self.raw(brcode_arr);
+                match self.raw(brcode_arr) {
+                    Ok(_) => {},
+                    Err(_) => {}
+                };
             }),
-            Err(e) => return Err(Error::BarcodeError)
+            Err(_e) => return Err(Error::BarcodeError)
         }
     }
 
@@ -268,7 +281,7 @@ impl Printer {
                     }
                 }
             },
-            Err(e) => return Err(Error::BarcodeError)
+            Err(_e) => return Err(Error::BarcodeError)
         }
     }
 

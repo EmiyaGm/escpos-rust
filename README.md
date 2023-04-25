@@ -1,6 +1,11 @@
 # escpos-rust: 基于 escpos-rs 优化扩展
 
+## 新增内容
+1. 打印一维条形码
+2. 打印 GB18030 文本
 
+## 未来新增功能
+- [ ] 四行表格打印
 
 # escpos-rs: A Rust crate for thermal printers
 
