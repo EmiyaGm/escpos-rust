@@ -1,6 +1,6 @@
 [package]
 name = "escpos-rust"
-version = "0.0.1"
+version = "0.0.2"
 license = "MIT"
 description = "Control esc/pos printers with rust update from escpos-rs"
 repository = "https://github.com/EmiyaGm/escpos-rust.git"
